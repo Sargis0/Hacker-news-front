@@ -1,7 +1,7 @@
-export const Submit = () => {
+export const Login = () => {
     return (
         <div>
-            Submit
+            Login
         </div>
     );
 };
