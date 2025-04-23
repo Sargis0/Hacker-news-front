@@ -2,7 +2,7 @@ import {MenuLink} from "../../atoms/menuLink/MenuLink.jsx";
 
 import styles from "./Menu.module.scss";
 
-export const Menu = () => {
+export const HeaderMenu = () => {
     return (
         <nav className={styles.nav}>
             <div className={styles.menuLeft}>
