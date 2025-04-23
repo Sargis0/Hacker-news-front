@@ -1,7 +1,7 @@
-export const Submit = () => {
+export const Newest = () => {
     return (
         <div>
-            Submit
+            Newest
         </div>
     );
 };
