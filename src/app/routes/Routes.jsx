@@ -10,6 +10,7 @@ import {Past} from "../../pages/past/Past.jsx";
 import {Show} from "../../pages/show/Show.jsx";
 import {Jobs} from "../../pages/jobs/Jobs.jsx";
 import {Ask} from "../../pages/ask/Ask.jsx";
+import {ResetPassword} from "../../pages/reset-password/ResetPassword.jsx";
 
 export const routes = [
     {path: "/news", element: <HackerNews/>},
@@ -24,4 +25,5 @@ export const routes = [
     {path: "/submit", element: <Submit/>},
     {path: "/login", element: <Login/>},
     {path: "/register", element: <Register/>},
+    {path: "/reset", element: <ResetPassword/>},
 ];
