@@ -1,7 +1,7 @@
 export const Jobs = () => {
     return (
         <div>
-            Jobs
+            Jobs Page
         </div>
     );
 };

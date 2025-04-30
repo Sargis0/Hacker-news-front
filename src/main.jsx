@@ -1,16 +1,20 @@
-import {createRoot} from "react-dom/client";
-import {StrictMode} from "react";
-import {App} from "./App.jsx";
+import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
+import { App } from "./App.jsx";
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-
+import store from './store/index.js';
+import { injectStore } from "./setup/axiosInstance.js";
 import "./index.css";
 
-import {store} from "./app/store/store.js";
+injectStore(store);
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <Provider store={store}>
-            <App/>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
         </Provider>
-    </StrictMode>,
-)
+    </StrictMode>
+);

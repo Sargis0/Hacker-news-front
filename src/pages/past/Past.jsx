@@ -1,7 +1,7 @@
 export const Past = () => {
     return (
         <div>
-            Past
+            Past page
         </div>
     );
 };

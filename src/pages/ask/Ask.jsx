@@ -1,7 +1,7 @@
 export const Ask = () => {
     return (
         <div>
-            Ask
+            Ask Page
         </div>
     );
 };
