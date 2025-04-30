@@ -1,0 +1,48 @@
+.account-container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item {
+    margin: 10px 0;
+}
+
+.info-item strong {
+    font-weight: bold;
+}
+
+input[type="email"] {
+    padding: 8px;
+    margin-left: 10px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 12px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
