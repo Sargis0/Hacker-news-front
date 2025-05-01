@@ -3,11 +3,8 @@ import { StrictMode } from "react";
 import { App } from "./App.jsx";
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './store/index.js';
-import { injectStore } from "./setup/axiosInstance.js";
+import store from './store/store.js';
 import "./index.css";
-
-injectStore(store);
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>

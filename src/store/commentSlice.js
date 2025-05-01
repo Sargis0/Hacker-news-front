@@ -1,31 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from "../setup/axiosInstance.js";
+import axiosInstance from "../http/axiosInstance";
 
-const initialState = {
-    commentsByNewsId: {},
-    status: 'idle',
-    error: null
-};
-
-// Fetch comments by news ID
 export const fetchComments = createAsyncThunk(
     'comments/fetchComments',
     async (newsId, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get(`/comment/news/${newsId}`);
-            return { newsId, comments: response.data.data };
+            return response.data.data;
         } catch (err) {
             return rejectWithValue(err.response?.data?.message || 'Failed to fetch comments');
         }
     }
 );
 
-// Post new comment
 export const postComment = createAsyncThunk(
     'comments/postComment',
-    async ({ newsId, text }, { rejectWithValue }) => {
+    async ({ newsId, text, parentCommentId }, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post('/comment', { newsId, text });
+            const response = await axiosInstance.post('/comment', {
+                newsId,
+                text,
+                parentCommentId
+            });
             return response.data.data;
         } catch (err) {
             return rejectWithValue(err.response?.data?.message || 'Failed to post comment');
@@ -35,24 +31,52 @@ export const postComment = createAsyncThunk(
 
 const commentSlice = createSlice({
     name: 'comments',
-    initialState,
-    reducers: {},
+    initialState: {
+        comments: [],
+        status: 'idle',
+        error: null
+    },
+    reducers: {
+        clearComments: (state) => {
+            state.comments = [];
+            state.status = 'idle';
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchComments.fulfilled, (state, action) => {
-                const { newsId, comments } = action.payload;
-                state.commentsByNewsId[newsId] = comments;
-                state.status = 'succeeded';
+            .addCase(fetchComments.pending, (state) => {
+                state.status = 'loading';
             })
-            .addCase(postComment.fulfilled, (state, action) => {
-                const newComment = action.payload;
-                const newsId = newComment.newsId;
-                if (!state.commentsByNewsId[newsId]) {
-                    state.commentsByNewsId[newsId] = [];
-                }
-                state.commentsByNewsId[newsId].unshift(newComment);
+            .addCase(fetchComments.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.comments = buildCommentTree(action.payload);
+            })
+            .addCase(fetchComments.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             });
     }
 });
 
+function buildCommentTree(comments) {
+    const commentMap = {};
+    const rootComments = [];
+
+    comments.forEach(comment => {
+        comment.replies = [];
+        commentMap[comment._id] = comment;
+
+        if (comment.parentComment) {
+            const parent = commentMap[comment.parentComment];
+            if (parent) parent.replies.push(comment);
+        } else {
+            rootComments.push(comment);
+        }
+    });
+
+    return rootComments;
+}
+
+export const { clearComments } = commentSlice.actions;
 export default commentSlice.reducer;

@@ -6,7 +6,6 @@ import { News } from "./pages/news/News.jsx";
 import { NewPosts } from "./pages/new/NewPosts.jsx";
 import { Ask } from "./pages/ask/Ask.jsx";
 import { Jobs } from "./pages/jobs/Jobs.jsx";
-import { Comments } from "./pages/comment/Comments.jsx";
 import { Submit } from "./pages/submit/Submit.jsx";
 import { Login } from "./pages/auth/login/Login.jsx";
 import { Register } from "./pages/auth/register/Register.jsx";
@@ -14,6 +13,7 @@ import { ResetPassword } from "./pages/reset-password/ResetPassword.jsx";
 import { Past } from "./pages/past/Past.jsx";
 import { setCredentials, logout, refreshToken } from './store/authSlice.js';
 import {Account} from "./pages/account/Account.jsx";
+import {ItemPage} from "./pages/item/ItemPage.jsx";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -50,6 +50,7 @@ export const App = () => {
 
     return (
         <>
+
             <Header/>
             <Routes>
                 <Route path="/" element={<Navigate to="/news"/>}/>
@@ -58,12 +59,12 @@ export const App = () => {
                 <Route path="/past" element={<Past/>}/>
                 <Route path="/ask" element={<Ask/>}/>
                 <Route path="/jobs" element={<Jobs/>}/>
-                <Route path="/comment/:id" element={<Comments/>}/>
                 <Route path="/submit" element={<Submit/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/reset-password" element={<ResetPassword/>}/>
                 <Route path="/account" element={<Account/>}/>
+                <Route path="/item/:id" element={<ItemPage />} />
                 <Route path="*" element={<div>Page Not Found</div>}/>
             </Routes>
         </>
