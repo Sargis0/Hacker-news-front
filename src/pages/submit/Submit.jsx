@@ -1,74 +1,90 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { submitNews } from "../../store/newsSlice.js";
+import {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {submitNews} from "../../store/newsSlice";
 import "./Submit.css";
 
 export const Submit = () => {
-    const [title, setTitle] = useState('');
-    const [url, setUrl] = useState('');
-    const [text, setText] = useState('');
-    const [error, setError] = useState(null);
-
+    const [formData, setFormData] = useState({
+        title: '',
+        url: '',
+        text: ''
+    });
+    const [error, setError] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated } = useSelector((state) => state.auth);
-    const newsStatus = useSelector((state) => state.news.status);
+    const {isAuthenticated} = useSelector(state => state.auth);
+    const {status} = useSelector(state => state.news);
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
 
         if (!isAuthenticated) {
-            setError('You need to login to submit news');
+            navigate('/login', {state: {from: '/submit'}});
             return;
         }
 
-        if (!title.trim()) {
-            setError('Title is required.');
+        if (!formData.title.trim()) {
+            setError('Title is required');
             return;
         }
 
-        if (!url.trim() && !text.trim()) {
-            setError('Either URL or Text must be provided.');
+        if (!formData.url.trim() && !formData.text.trim()) {
+            setError('Please provide either URL or text');
             return;
         }
-
-        setError(null);
 
         try {
-            await dispatch(submitNews({ title, url, text })).unwrap();
+            await dispatch(submitNews(formData)).unwrap();
             navigate('/news');
         } catch (err) {
-            setError(err.message || 'Submission failed.');
+            setError(err || 'Failed to submit news');
         }
     };
 
     return (
         <div className="submit-container">
-            <h2>Submit a new story</h2>
+            <h2>Submit</h2>
+            {error && <div className="error">{error}</div>}
             <form onSubmit={handleSubmit}>
-                {error && <p className="error">{error}</p>}
                 <input
                     type="text"
+                    name="title"
                     placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={formData.title}
+                    onChange={handleChange}
                     required
+                    disabled={status === 'loading'}
                 />
                 <input
                     type="url"
+                    name="url"
                     placeholder="URL (optional)"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    value={formData.url}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
                 />
                 <textarea
+                    name="text"
                     placeholder="Text (optional)"
                     rows="6"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
+                    value={formData.text}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
                 />
-                <button type="submit" disabled={newsStatus === 'loading'}>
-                    {newsStatus === 'loading' ? 'Submitting...' : 'Submit'}
+                <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                >
+                    {status === 'loading' ? 'Submitting...' : 'Submit'}
                 </button>
             </form>
         </div>

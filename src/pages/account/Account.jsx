@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Account.css';
-import { updateEmail } from "../../store/authSlice.js";
+// import { updateEmail } from "../../store/authSlice.js";
 
 export const Account = () => {
     const username = useSelector((state) => state.auth.username);
     const email = useSelector((state) => state.auth.email);
-    const created = useSelector((state) => state.auth.created);
+    // const created = useSelector((state) => state.auth.created);
     const dispatch = useDispatch();
 
     const [newEmail, setNewEmail] = useState(email || '');
@@ -16,7 +16,7 @@ export const Account = () => {
     };
 
     const handleSaveEmail = () => {
-        dispatch(updateEmail(newEmail));
+        // dispatch(updateEmail(newEmail));
     };
 
     return (

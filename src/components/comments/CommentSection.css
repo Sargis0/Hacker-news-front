@@ -1,0 +1,68 @@
+.comment-section {
+    margin-top: 2rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.comment-form {
+    margin-bottom: 2rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.comment-item {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.comment-text {
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+}
+
+.reply-button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.reply-button:hover {
+    text-decoration: underline;
+}
+
+.replies {
+    margin-top: 1rem;
+    border-left: 2px solid #ddd;
+    padding-left: 1rem;
+}
+
+.login-prompt {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1rem;
+}

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from "../setup/axiosInstance.js";
+import axiosInstance from "../http/axiosInstance.js";
 
 const initialState = {
     newsList: [],
@@ -39,6 +39,19 @@ export const submitNews = createAsyncThunk(
     }
 );
 
+export const fetchNewsItem = createAsyncThunk(
+    'news/fetchNewsItem',
+    async (newsId, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/news/${newsId}`);
+            return response.data.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.message || 'Failed to fetch news item');
+        }
+    }
+);
+
+
 const newsSlice = createSlice({
     name: 'news',
     initialState,
@@ -49,6 +62,9 @@ const newsSlice = createSlice({
             state.status = 'idle';
             state.error = null;
             state.hasMore = true;
+        },
+        clearCurrentItem: (state) => {
+            state.currentItem = null;
         }
     },
     extraReducers: (builder) => {
@@ -74,9 +90,21 @@ const newsSlice = createSlice({
             })
             .addCase(submitNews.fulfilled, (state, action) => {
                 state.newsList.unshift(action.payload);
+            })
+            .addCase(fetchNewsItem.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(fetchNewsItem.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.currentItem = action.payload;
+            })
+            .addCase(fetchNewsItem.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             });
     },
 });
 
-export const { resetNews } = newsSlice.actions;
+export const { resetNews, clearCurrentItem } = newsSlice.actions;
 export default newsSlice.reducer;
